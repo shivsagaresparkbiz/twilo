@@ -91,6 +91,15 @@ function runServerlessFunction(handler, req, res) {
 
   try {
     const event = parseBody(req);
+
+    // Defensive guard: creating a conversation requires a valid Conversations
+    // Service SID. If one isn't configured, skip conversation creation instead of
+    // letting the Twilio SDK throw and turn into a 500. Video tokens still work.
+    if (event && event.create_conversation && !context.CONVERSATIONS_SERVICE_SID) {
+      console.warn('create_conversation requested but no CONVERSATIONS_SERVICE_SID is set; skipping conversation.');
+      event.create_conversation = false;
+    }
+
     const callback = (_, serverlessResponse) => {
       const { statusCode, headers, body } = serverlessResponse;
       if (headers) {
