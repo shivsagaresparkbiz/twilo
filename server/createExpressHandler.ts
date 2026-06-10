@@ -27,13 +27,36 @@ const context: ServerlessContext = {
 
 export function createExpressHandler(serverlessFunction: ServerlessFunction) {
   return (req: Request, res: Response) => {
-    serverlessFunction(context, req.body, (_, serverlessResponse) => {
-      const { statusCode, headers, body } = serverlessResponse;
+    const sendError = (error: unknown) => {
+      console.error('Error in serverless function:', error);
+      if (!res.headersSent) {
+        res.status(500).json({
+          error: {
+            message: 'server error',
+            explanation: error instanceof Error ? error.message : String(error),
+          },
+        });
+      }
+    };
 
-      res
-        .status(statusCode)
-        .set(headers)
-        .json(body);
-    });
+    try {
+      // The serverless functions are `async`, so a thrown error becomes a rejected
+      // promise. Catching it here prevents a single bad request (e.g. a missing or
+      // invalid Conversations Service SID) from crashing the entire token server.
+      const result = serverlessFunction(context, req.body, (_, serverlessResponse) => {
+        const { statusCode, headers, body } = serverlessResponse;
+
+        res
+          .status(statusCode)
+          .set(headers)
+          .json(body);
+      }) as unknown;
+
+      if (result instanceof Promise) {
+        result.catch(sendError);
+      }
+    } catch (error) {
+      sendError(error);
+    }
   };
 }

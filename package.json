@@ -7,6 +7,7 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
+    "@react-spring/web": "^9.7.3",
     "@twilio-labs/plugin-rtc": "^0.9.0",
     "@twilio/conversations": "^2.1.0",
     "@twilio/video-processors": "^3.0.0",
@@ -154,6 +155,17 @@
   "overrides": {
     "cheerio": "0.22.0",
     "type-fest": "^0.20.2",
-    "react-refresh": "0.11.0"
-  }
+    "react-refresh": "0.11.0",
+    "@types/react": "16.14.70",
+    "@types/react-dom": "16.9.25",
+    "@types/testing-library__dom": "6.14.0",
+    "@types/minimatch": "5.1.2"
+  },
+  "resolutions": {
+    "@types/react": "16.14.70",
+    "@types/react-dom": "16.9.25",
+    "@types/testing-library__dom": "6.14.0",
+    "@types/minimatch": "5.1.2"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e"
 }

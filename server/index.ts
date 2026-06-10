@@ -6,6 +6,15 @@ import { ServerlessFunction } from './types';
 
 const PORT = process.env.PORT ?? 8081;
 
+// Safety net: never let an unexpected error tear down the token server, otherwise
+// the dev proxy returns a plain-text "Proxy error" page (invalid JSON) to the app.
+process.on('unhandledRejection', error => {
+  console.error('Unhandled promise rejection:', error);
+});
+process.on('uncaughtException', error => {
+  console.error('Uncaught exception:', error);
+});
+
 const app = express();
 app.use(express.json());
 

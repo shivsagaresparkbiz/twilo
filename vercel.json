@@ -1,0 +1,10 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "create-react-app",
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "rewrites": [
+    { "source": "/token", "destination": "/api/token" },
+    { "source": "/recordingrules", "destination": "/api/recordingrules" }
+  ]
+}
